@@ -11,14 +11,14 @@ defmodule RacklaSkeleton.Router do
   # Below is a collection of sample end-points. #
   # =========================================== #
   
-  # Return a simple predfined value.
+  # Return a predfined value.
   get "/hello" do
     "Hello, world!"
     |> just
     |> response
   end
 
-  # Convert Elixir an map to JSON.
+  # Convert Elixir a map to JSON.
   # Return it as a compressed JSON response.
   get "/hello-json" do
     %{"hello" => "world!"}
