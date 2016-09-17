@@ -4,9 +4,6 @@ defmodule RacklaSkeleton.RouterTest do
 
   @opts RacklaSkeleton.Router.init([])
 
-  @test_router_port 4444
-  Plug.Adapters.Cowboy.http(RacklaSkeleton.Router, [], port: @test_router_port)
-
   test "Hello, world!" do
     conn =
       :get
@@ -31,5 +28,20 @@ defmodule RacklaSkeleton.RouterTest do
     assert conn.method == "GET"
     assert get_resp_header(conn, "content-encoding") == ["gzip"]
     assert :zlib.gunzip(conn.resp_body) |> Poison.decode! == %{"hello" => "world!"}
+  end
+  
+  test "Proxy - Hello, world!" do
+    port = Application.get_env(:rackla_skeleton, :port, 4000)
+    port = if is_binary(port), do: String.to_integer(port), else: port
+    
+    conn =
+      :get
+      |> conn("/proxy?http://localhost:#{port}/hello")
+      |> RacklaSkeleton.Router.call(@opts)
+
+    assert conn.status == 200
+    assert conn.scheme == :http
+    assert conn.method == "GET"
+    assert conn.resp_body == "Hello, world!"
   end
 end
