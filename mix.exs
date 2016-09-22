@@ -25,7 +25,7 @@ defmodule RacklaSkeleton.Mixfile do
 
   defp deps do
     [
-      {:rackla, "~> 1.2", git: "git://github.com/antonfagerberg/rackla.git", branch: "develop"},
+      {:rackla, "~> 1.2"},
       {:cowboy, "~> 1.0"},
       {:remix, "~> 0.0", only: :dev}
     ]
